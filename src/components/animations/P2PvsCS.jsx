@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SelfCheck from '../SelfCheck';
 
 // Constants representing bandwidth units
 const F = 100;   // file size (arbitrary units)
@@ -12,6 +13,17 @@ function calcCS(n) {
 function calcP2P(n) {
   return Math.max(F / Us, F / dmin, (n * F) / (Us + n * Ui));
 }
+
+const checkData = [
+  {
+    q: "사용자 수가 10배 늘었을 때 Client-Server와 P2P의 배포 시간은 각각 어떻게 변하는가?\n왜 다른가?",
+    a: "CS: 서버 업로드 용량(Us)은 고정이므로 사용자 N이 늘면 배포 시간 NF/Us도 선형으로 증가한다.\nP2P: 새 피어가 합류하면 그 피어의 업로드 용량도 추가된다 (Us + N·Ui).\n분자(NF)와 분모(Us + N·Ui)가 같이 증가하므로 배포 시간 증가가 훨씬 완만하다."
+  },
+  {
+    q: "P2P에서 한 피어가 파일의 일부만 가지고 있을 때 다른 피어에게 줄 수 있는가?\n이게 왜 중요한가?",
+    a: "줄 수 있다. BitTorrent처럼 파일을 청크(chunk) 단위로 나눠서 교환한다.\n전체 파일을 다 받기 전에도 받은 청크를 다른 피어에게 업로드할 수 있다.\n이 때문에 P2P는 다운로드가 진행될수록 전체 네트워크 업로드 용량이 증가한다."
+  }
+];
 
 export default function P2PvsCS() {
   const [n, setN] = useState(1);
@@ -153,6 +165,9 @@ export default function P2PvsCS() {
           💡 P2P: every new peer brings additional U<sub>i</sub>={Ui} upload capacity
         </span>
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

@@ -40,7 +40,7 @@ function CameraRig({ drillDownLayer, controlsRef }) {
   return null;
 }
 
-export default function Scene({ setSelectedLayer, showPduNames, isPlaying, speed, drillDownLayer }) {
+export default function Scene({ setSelectedLayer, showPduNames, isPlaying, speed, drillDownLayer, animComplete, onAnimComplete }) {
   const senderX = -6;
   const receiverX = 6;
   const controlsRef = useRef();
@@ -68,6 +68,7 @@ export default function Scene({ setSelectedLayer, showPduNames, isPlaying, speed
             isSender={true}
             onClick={setSelectedLayer}
             showPduNames={showPduNames}
+            animComplete={animComplete}
           />
         ))}
       </group>
@@ -93,12 +94,13 @@ export default function Scene({ setSelectedLayer, showPduNames, isPlaying, speed
             isSender={false}
             onClick={setSelectedLayer}
             showPduNames={showPduNames}
+            animComplete={animComplete}
           />
         ))}
       </group>
 
       {/* Packet Animation */}
-      <PacketAnim isPlaying={isPlaying} speed={speed} />
+      <PacketAnim isPlaying={isPlaying} speed={speed} onAnimComplete={onAnimComplete} />
 
       <OrbitControls 
         ref={controlsRef}

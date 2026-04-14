@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SelfCheck from '../SelfCheck';
 
 export default function ForwardingVsRouting() {
   const [packetPos, setPacketPos] = useState(-50); // -50 = ingress, 0 = center, 100 = egress
@@ -35,6 +36,17 @@ export default function ForwardingVsRouting() {
     }, 1500);
     return () => clearInterval(timer);
   }, []);
+
+  const checkData = [
+    {
+      q: "라우팅 알고리즘이 실행되는 속도와 포워딩이 실행되는 속도는 왜 다른가?",
+      a: "라우팅: 전체 네트워크 토폴로지를 분석하고 경로를 계산하는 소프트웨어 작업.\n초 단위 또는 그 이상의 주기로 실행되며 결과를 포워딩 테이블에 저장한다.\n포워딩: 패킷이 도착할 때마다 테이블을 룩업하는 하드웨어 작업.\n나노초~마이크로초 수준으로 처리된다. 라우팅 결과를 그냥 읽기만 한다."
+    },
+    {
+      q: "라우팅 테이블이 업데이트되는 동안 패킷이 잘못된 경로로 전달될 수 있는가?",
+      a: "가능하다. 라우팅 프로토콜이 새 경로를 계산하고 모든 라우터에 전파되기 전까지\n일부 라우터는 구 테이블을 사용한다.\n이 수렴(Convergence) 시간 동안 패킷이 루프를 돌거나 잘못된 경로로 가는 일시적 문제가 생긴다.\n이를 방지하기 위해 TTL(Time To Live) 값이 있어 무한 루프를 막는다."
+    }
+  ];
 
   return (
     <div className="w-full h-full flex flex-col font-sans text-white p-4">
@@ -141,6 +153,9 @@ export default function ForwardingVsRouting() {
         </div>
 
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SelfCheck from '../SelfCheck';
 
 const STEP_TIME = 2000;
 
@@ -31,6 +32,21 @@ const TEARDOWN_STEPS = [
   { from: 'server', to: 'client',  label: 'ACK',     color: '#34d399', note: 'Server acknowledges FIN' },
   { from: 'server', to: 'client',  label: 'FIN',     color: '#fb923c', note: 'Server also done — sends its FIN' },
   { from: 'client', to: 'server',  label: 'ACK',     color: '#34d399', note: 'Client ACKs — enters TIME_WAIT' },
+];
+
+const checkData = [
+  {
+    q: "3-way handshake에서 왜 2-way (SYN + SYN-ACK)로는 부족한가?",
+    a: "SYN-ACK만으로는 서버가 클라이언트의 메시지를 받을 수 있다는 것만 확인된다.\n클라이언트가 서버의 SYN-ACK를 받았다는 확인(ACK)이 없으면\n서버는 클라이언트가 실제로 연결 준비가 됐는지 알 수 없다.\n양방향 통신 준비를 서로 확인하려면 3단계가 필요하다."
+  },
+  {
+    q: "TIME_WAIT 상태가 왜 필요한가?\n연결을 끊자마자 바로 같은 포트로 새 연결을 열면 어떤 문제가 생길 수 있는가?",
+    a: "마지막 ACK가 유실될 경우를 대비한다. 상대방이 FIN을 재전송할 수 있으므로\n일정 시간 (보통 2×MSL) 동안 대기하며 늦게 도착하는 패킷을 처리한다.\n바로 새 연결을 열면 이전 연결의 지연 패킷이 새 연결의 데이터로 오인될 수 있다."
+  },
+  {
+    q: "HTTP Persistent connection이 없다면 웹페이지 하나를 로드할 때\nTCP handshake가 몇 번 일어나는가? 이게 왜 문제인가?",
+    a: "페이지에 포함된 객체(이미지, CSS, JS) 수만큼 handshake가 발생한다.\n현대 웹페이지는 수십~수백 개의 객체를 포함하므로\nhandshake 비용(1 RTT × 객체 수)이 실제 데이터 전송보다 더 큰 오버헤드가 된다."
+  }
 ];
 
 function Arrow({ from, to, label, color, yPct }) {
@@ -211,6 +227,9 @@ export default function TcpHandshake() {
         </div>
 
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

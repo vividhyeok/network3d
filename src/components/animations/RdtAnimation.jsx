@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SelfCheck from '../SelfCheck';
 
 const FLIGHT_TIME = 2000;
 
@@ -217,6 +218,21 @@ export default function RdtAnimation() {
   const [isWaitingAck, setIsWaitingAck] = useState(false);
   const timerRef = useRef(null);
 
+  const checkData = [
+    {
+      q: "RDT 2.0에서 NAK 대신 ACK만 사용할 수 없는가?\n(힌트: ACK에 번호를 붙인다면?)",
+      a: "가능하다. ACK 0 / ACK 1처럼 마지막으로 올바르게 받은 패킷 번호를 ACK에 붙이면\nNAK 없이도 '무엇을 받았는지' 전달할 수 있다.\n실제로 RDT 3.0과 TCP는 NAK 없이 누적 ACK 방식을 사용한다."
+    },
+    {
+      q: "RDT 3.0에서 타이머가 너무 짧으면 / 너무 길면 각각 어떤 문제가 생기는가?",
+      a: "너무 짧으면: 아직 전달 중인 패킷을 손실로 오판 → 불필요한 재전송 폭증 → 네트워크 낭비.\n너무 길면: 실제 손실이 발생해도 오래 기다린 후에야 재전송 → 지연 증가.\nTCP는 RTT를 측정하여 동적으로 타이머를 조절한다."
+    },
+    {
+      q: "GBN과 SR 중 수신자 버퍼가 필요한 쪽은 어느 쪽인가?\n왜 GBN은 버퍼가 필요 없는가?",
+      a: "SR: 순서가 어긋난 패킷을 임시 저장해야 하므로 버퍼 필요.\nGBN: 순서가 어긋난 패킷은 전부 버린다. 버퍼에 저장하지 않고 즉시 폐기.\n그래서 GBN은 구현이 단순하지만 패킷 손실 시 낭비가 크고,\nSR은 복잡하지만 효율적이다."
+    }
+  ];
+
   const addLog = msg => setLog(p => [msg, ...p].slice(0, 10));
 
   const resetAll = () => {
@@ -332,6 +348,9 @@ export default function RdtAnimation() {
         <div className="flex-1">
           <PipeliningView />
         </div>
+        
+        {/* Self Check Layer */}
+        <SelfCheck questions={checkData} />
       </div>
     );
   }
@@ -412,6 +431,9 @@ export default function RdtAnimation() {
         {log.map((l, i) => <div key={i} className="text-gray-300 mb-0.5">&gt; {l}</div>)}
         {log.length === 0 && <span className="text-gray-600">Press a send button to start</span>}
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

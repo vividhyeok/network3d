@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SelfCheck from '../SelfCheck';
 
 export default function CongestionGraph() {
   const [data, setData] = useState([{ round: 0, cwnd: 1, ssthresh: 16, phase: 'ss', event: null, eventType: null }]);
@@ -64,8 +65,24 @@ export default function CongestionGraph() {
     return '#3b82f6';                                // blue
   };
 
+  const checkData = [
+    {
+      q: "Slow Start라는 이름인데 왜 cwnd가 지수적으로(2배씩) 증가하는가?\n이름이 왜 Slow Start인가?",
+      a: "이름은 '느리게 시작한다'는 의미다 — cwnd를 1에서 시작하기 때문이다.\n증가 방식은 지수적이지만, 0에서 시작하는 것보다는 안전하게 탐색한다는 의미에서 Slow다.\nACK 하나당 cwnd를 1씩 늘리면, 한 Round에 cwnd개의 ACK가 오므로\n결과적으로 한 Round마다 cwnd가 2배가 된다."
+    },
+    {
+      q: "3-Dup-ACK와 Timeout은 둘 다 패킷 손실을 의미하는데\n왜 TCP는 둘을 다르게 처리하는가?",
+      a: "3-Dup-ACK: 손실된 패킷 이후 패킷들이 계속 도착하고 있다는 뜻이다.\n네트워크는 아직 동작 중 → 혼잡이 심하지 않음 → cwnd를 절반만 줄이고 CA 유지.\nTimeout: 아무 패킷도 도착하지 않는다. 네트워크가 완전히 막혔을 가능성이 높다.\n더 보수적으로 대응 → cwnd를 1로 초기화하고 Slow Start 재시작."
+    },
+    {
+      q: "혼잡 제어가 없다면 인터넷에서 어떤 일이 일어나는가?",
+      a: "모든 TCP 연결이 최대 속도로 계속 전송한다.\n라우터 큐가 가득 차서 패킷이 대규모로 손실된다.\n손실을 감지한 sender들이 재전송하면 트래픽이 더 증가한다.\n결국 네트워크 전체가 붕괴한다 — 이를 Congestion Collapse라 한다.\n1986년 실제로 인터넷이 이 상태가 됐고, 이후 TCP 혼잡 제어가 도입됐다."
+    }
+  ];
+
   return (
-    <div className="w-full h-full flex gap-6">
+    <div className="w-full h-full flex flex-col gap-4">
+      <div className="flex gap-6 relative" style={{ height: '380px' }}>
       {/* Graph */}
       <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col">
         <h3 className="text-base font-bold text-teal-400 tracking-widest uppercase mb-3">TCP Congestion Window Over Time</h3>
@@ -173,6 +190,10 @@ export default function CongestionGraph() {
           RESET
         </button>
       </div>
+      </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

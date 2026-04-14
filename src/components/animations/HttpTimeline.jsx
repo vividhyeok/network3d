@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SelfCheck from '../SelfCheck';
 
 // Common visual configuration for arrows
 const Arrow = ({ top, label, duration = "1 RTT", direction = "right", color = "text-teal-400", delayClass="delay-0" }) => {
@@ -15,6 +16,21 @@ const Arrow = ({ top, label, duration = "1 RTT", direction = "right", color = "t
 
 export default function HttpTimeline() {
   const [mode, setMode] = useState('non-persistent'); // 'non-persistent', 'persistent'
+
+  const checkData = [
+    {
+      q: "Non-persistent HTTP에서 이미지 파일 3개를 받으려면 TCP 연결을 몇 번 맺어야 하는가?\n각 연결마다 왜 2 RTT가 드는가?",
+      a: "HTML 1개 + 이미지 3개 = 총 4개 객체. 각 객체마다 TCP 연결을 새로 맺는다.\nTCP 연결 자체가 1 RTT (SYN-SYNACK), 실제 GET 요청-응답이 1 RTT.\n따라서 객체 하나당 2 RTT → 총 8 RTT.\n(단, HTML을 먼저 받아야 이미지 URL을 알 수 있으므로 순차적으로 발생한다.)"
+    },
+    {
+      q: "Persistent + Pipelining에서 같은 4개 객체를 받으면 몇 RTT인가?\n왜 줄어드는가?",
+      a: "TCP 연결 1번 (1 RTT) + 모든 GET을 동시에 파이프라이닝 (1 RTT).\n총 ~2 RTT. 연결을 재사용하고 요청을 기다리지 않고 연속으로 보내기 때문이다.\n단, 첫 HTML을 받아야 이미지 URL을 알므로 HTML 수신 후 나머지를 파이프라이닝."
+    },
+    {
+      q: "HTTP는 왜 기본적으로 stateless(무상태)인가?\n그렇다면 로그인 유지는 어떻게 구현하는가?",
+      a: "HTTP 자체는 요청-응답이 끝나면 서버가 클라이언트를 기억하지 않는다.\n단순하게 유지하기 위한 설계다.\n로그인 유지는 쿠키를 통해 클라이언트가 상태를 직접 들고 다니는 방식으로 구현한다."
+    }
+  ];
 
   // Non-persistent: 3 objects * 2 RTT = 6 RTT
   // Persistent: 1 RTT (conn) + 1 RTT (html) + 1 RTT (2 images pipelined) = 3 RTT
@@ -99,6 +115,9 @@ export default function HttpTimeline() {
         </div>
 
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
 
       <style jsx>{`
         @keyframes fadeIn {

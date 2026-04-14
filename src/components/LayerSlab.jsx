@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from '@react-three/drei';
 
-export default function LayerSlab({ layer, position, isSender, onClick, showPduNames }) {
+export default function LayerSlab({ layer, position, isSender, onClick, showPduNames, animComplete }) {
   const [hovered, setHovered] = useState(false);
 
   // Slab dimensions
@@ -33,7 +33,7 @@ export default function LayerSlab({ layer, position, isSender, onClick, showPduN
           transparent
           opacity={layer.opacity}
           emissive={layer.color}
-          emissiveIntensity={hovered ? 0.5 : 0.1}
+          emissiveIntensity={hovered || animComplete ? 0.5 : 0.1}
           metalness={0.2}
           roughness={0.3}
         />
@@ -52,6 +52,22 @@ export default function LayerSlab({ layer, position, isSender, onClick, showPduN
       >
         {isSender ? `[S] ${layer.name}` : `[R] ${layer.name}`}
       </Text>
+
+      {/* Detail Link (appears when anim Complete) */}
+      {animComplete && (
+        <Text
+          position={[0, height / 2 + 0.05, depth / 2 - 1.2]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          fontSize={0.2}
+          color="#facc15"
+          anchorX="center"
+          anchorY="middle"
+          outlineWidth={0.01}
+          outlineColor="#000"
+        >
+          자세히 보기 →
+        </Text>
+      )}
 
       {/* Conditional PDU Data Unit Name */}
       {showPduNames && (

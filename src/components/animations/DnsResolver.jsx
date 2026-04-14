@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SelfCheck from '../SelfCheck';
 
 const STEP_TIME = 2000;
 
@@ -10,6 +11,21 @@ export default function DnsResolver() {
   const [isCacheQuery, setIsCacheQuery] = useState(false);
   const [cacheStepDone, setCacheStepDone] = useState(false);
   const timerRef = useRef(null);
+
+  const checkData = [
+    {
+      q: "브라우저가 google.com을 입력받았을 때 실제로 연결하는 건 무엇인가?\nDNS가 없다면 어떻게 해야 하는가?",
+      a: "브라우저는 IP 주소로만 통신할 수 있다. google.com은 사람이 읽기 쉬운 이름일 뿐이다.\nDNS가 없다면 사용자가 직접 142.250.196.46 같은 IP 주소를 알고 입력해야 한다."
+    },
+    {
+      q: "Iterative와 Recursive 방식에서 '일을 누가 하는가'가 어떻게 다른가?",
+      a: "Iterative: Local DNS가 직접 Root → TLD → Auth를 차례로 방문한다. 클라이언트(Local DNS)가 일한다.\nRecursive: Local DNS가 Root에 물어보면 Root가 TLD에, TLD가 Auth에 물어본다. 서버들이 일한다.\n실제 인터넷은 주로 Iterative를 사용한다 — 서버 부하를 분산하기 위해서다."
+    },
+    {
+      q: "같은 도메인을 1분 안에 두 번 질의하면 두 번째는 왜 빠른가?\nTTL이 만료된 후 같은 도메인을 질의하면 어떻게 되는가?",
+      a: "첫 질의 결과가 Local DNS 캐시에 TTL 시간 동안 저장된다.\n두 번째 질의는 캐시 HIT → Root/TLD/Auth 방문 없이 즉시 응답.\nTTL 만료 후에는 캐시가 지워지므로 다시 4-hop 전체 질의를 수행한다."
+    }
+  ];
 
   const stepsIterative = [
     { from: 'client', to: 'local', msg: 'Q: www.abc.com IP?' },
@@ -213,11 +229,13 @@ export default function DnsResolver() {
           })()}
         </svg>
 
-        {/* Step counter */}
         <div className="absolute bottom-3 left-3 font-mono text-xs text-gray-500">
           Step {step}/{activeSteps.length} {isCacheQuery && '(Cache Query)'}
         </div>
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

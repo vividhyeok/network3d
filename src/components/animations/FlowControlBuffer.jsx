@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SelfCheck from '../SelfCheck';
 
 export default function FlowControlBuffer() {
   const [senderBuffer, setSenderBuffer] = useState(0); // number of packets waiting
@@ -74,6 +75,17 @@ export default function FlowControlBuffer() {
     }, 100);
     return () => clearInterval(animTimer);
   }, [receiverBuffer]);
+
+  const checkData = [
+    {
+      q: "혼잡 제어와 흐름 제어는 둘 다 송신 속도를 제한하는데, 무엇이 다른가?",
+      a: "흐름 제어: 수신자의 버퍼가 넘치지 않도록 제한. 수신자가 rwnd로 알려준다.\n혼잡 제어: 네트워크 내부(라우터 큐)가 막히지 않도록 제한. sender가 스스로 cwnd를 조절.\n실제 TCP 송신량 = min(cwnd, rwnd). 두 제한 중 더 작은 쪽이 적용된다."
+    },
+    {
+      q: "수신자 앱이 버퍼에서 데이터를 읽는 속도가 0이 되면 어떤 일이 일어나는가?\n이 상태가 영원히 지속되면 통신이 완전히 멈추는가?",
+      a: "rwnd = 0이 되면 sender는 전송을 멈춘다.\n하지만 완전히 멈추지는 않는다 — TCP는 이 상태에서 1바이트짜리 probe 패킷을 주기적으로 보낸다.\n수신자가 버퍼를 비우면 rwnd > 0인 ACK를 돌려보내고, sender가 재개한다."
+    }
+  ];
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -156,6 +168,9 @@ export default function FlowControlBuffer() {
         </div>
 
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }

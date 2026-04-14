@@ -11,6 +11,7 @@ function App() {
   const [drillDownLayer, setDrillDownLayer] = useState(null);
   const [showPduNames, setShowPduNames] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [animComplete, setAnimComplete] = useState(false);
 
   // Speed is now fixed to 'slow' inside App.
   const speed = 'slow';
@@ -44,6 +45,11 @@ function App() {
         isPlaying={isPlaying}
         speed={speed}
         drillDownLayer={drillDownLayer}
+        animComplete={animComplete}
+        onAnimComplete={() => {
+          setIsPlaying(false);
+          setAnimComplete(true);
+        }}
       />
 
       {/* Title */}
@@ -64,7 +70,10 @@ function App() {
           showPduNames={showPduNames}
           setShowPduNames={setShowPduNames}
           isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
+          setIsPlaying={(v) => {
+            setIsPlaying(v);
+            if (v) setAnimComplete(false); // Reset complete state when starting to play
+          }}
         />
       </div>
 

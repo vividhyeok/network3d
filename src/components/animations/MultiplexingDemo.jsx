@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SelfCheck from '../SelfCheck';
 
 const PROCESSES = [
   { port: 80,    name: 'HTTP Server',   color: '#0ea5e9', bg: 'bg-sky-900',    border: 'border-sky-500' },
@@ -40,6 +41,17 @@ export default function MultiplexingDemo() {
   const [isRunning, setIsRunning] = useState(false);
   const queueRef = useRef([...INCOMING_PACKETS]);
   const timersRef = useRef([]);
+
+  const checkData = [
+    {
+      q: "웹 서버가 port 80 하나만 열어도 수천 명의 클라이언트를 동시에 처리할 수 있는 이유는?",
+      a: "TCP는 4-tuple (src IP, src port, dst IP, dst port)로 소켓을 구분한다.\n클라이언트마다 src IP 또는 src port가 다르므로 dst port가 모두 80이어도\n각각 다른 소켓으로 라우팅된다.\n서버 입장에서는 port 80으로 들어오는 연결마다 별도 소켓을 생성한다."
+    },
+    {
+      q: "UDP에서 두 클라이언트가 같은 서버의 같은 포트로 패킷을 보내면 어떻게 되는가?\nTCP와 어떻게 다른가?",
+      a: "UDP: dst port만으로 소켓을 결정하므로 두 패킷이 같은 소켓으로 들어간다.\n애플리케이션이 src IP/port를 직접 읽어서 누가 보냈는지 구분해야 한다.\nTCP: 4-tuple이 다르면 별도 소켓 → 자동으로 연결별 구분된다."
+    }
+  ];
 
   const addLog = msg => setLog(p => [msg, ...p].slice(0, 8));
 
@@ -206,6 +218,9 @@ export default function MultiplexingDemo() {
           </div>
         </div>
       </div>
+
+      {/* Self Check Layer */}
+      <SelfCheck questions={checkData} />
     </div>
   );
 }
