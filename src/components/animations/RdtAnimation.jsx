@@ -3,7 +3,7 @@ import SelfCheck from '../SelfCheck';
 
 const FLIGHT_TIME = 2000;
 
-/* ─── Packet flying across the lane ──────────────────────────── */
+/* ?�?�?� Packet flying across the lane ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?� */
 function PacketPill({ pkt, onComplete }) {
   const [pos, setPos] = useState(pkt.isAck ? 100 : 0);
   const [opacity, setOpacity] = useState(1);
@@ -37,7 +37,7 @@ function PacketPill({ pkt, onComplete }) {
   );
 }
 
-/* ─── Pipelining sub-component ───────────────────────────────── */
+/* ?�?�?� Pipelining sub-component ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?� */
 function PipeliningView() {
   const N = 4; // packet count in queue
   const [protocol, setProtocol] = useState('gbn'); // gbn | sr
@@ -65,7 +65,7 @@ function PipeliningView() {
 
   const startSending = () => {
     setPhase('sending');
-    addLog(`Sending pkts 0–${windowSize - 1} (window=${windowSize})`);
+    addLog(`Sending pkts 0??{windowSize - 1} (window=${windowSize})`);
   };
 
   const injectLoss = () => {
@@ -73,7 +73,7 @@ function PipeliningView() {
     const drop = windowBase + 1; // drop 2nd in window
     setDroppedPkt(drop);
     setPhase('dropped');
-    addLog(`→ Packet #${drop} LOST in network`);
+    addLog(`??Packet #${drop} LOST in network`);
 
     setTimeout(() => {
       if (protocol === 'gbn') {
@@ -93,7 +93,7 @@ function PipeliningView() {
     if (next >= TOTAL) return;
     setAckedUpTo(next);
     setWindowBase(Math.min(next + 1, TOTAL));
-    addLog(`ACK #${next} received — window slides to [${Math.min(next + 1, TOTAL)}..${Math.min(next + windowSize, TOTAL - 1)}]`);
+    addLog(`ACK #${next} received ??window slides to [${Math.min(next + 1, TOTAL)}..${Math.min(next + windowSize, TOTAL - 1)}]`);
   };
 
   // Render packet slots
@@ -115,7 +115,7 @@ function PipeliningView() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col gap-4">
+    <div className="w-full flex-1 flex flex-col gap-4">
       {/* Controls */}
       <div className="flex flex-wrap gap-3 items-center bg-black/40 px-5 py-3 rounded-xl border border-white/10">
         <span className="text-xs font-bold text-teal-400 uppercase tracking-wider">Protocol</span>
@@ -136,15 +136,15 @@ function PipeliningView() {
         <div className="w-px h-5 bg-white/20" />
         <button onClick={startSending} disabled={phase !== 'idle'}
           className="px-4 py-2 bg-teal-600 hover:bg-teal-500 disabled:bg-teal-900 disabled:text-gray-500 text-white rounded-lg font-bold text-sm">
-          ▶ Start
+          ??Start
         </button>
         <button onClick={injectLoss} disabled={phase !== 'sending'}
           className="px-4 py-2 bg-red-700 hover:bg-red-600 disabled:bg-gray-800 disabled:text-gray-600 text-white rounded-lg font-bold text-sm">
-          💥 Drop Pkt #{(windowBase + 1)}
+          ?�� Drop Pkt #{(windowBase + 1)}
         </button>
         <button onClick={advanceWindow} disabled={phase !== 'sending'}
           className="px-4 py-2 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-800 disabled:text-gray-600 text-white rounded-lg font-bold text-sm">
-          ✓ Receive ACK
+          ??Receive ACK
         </button>
         <button onClick={reset} className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg text-sm">
           Reset
@@ -155,13 +155,13 @@ function PipeliningView() {
       <div className={`text-center py-2 rounded-lg font-bold text-sm ${protocol === 'gbn' ? 'bg-red-900/30 border border-red-700 text-red-300' : 'bg-orange-900/30 border border-orange-700 text-orange-300'}`}>
         {protocol === 'gbn'
           ? 'GBN: on loss, retransmit dropped packet AND everything after it'
-          : 'SR: on loss, retransmit ONLY the dropped packet — receiver buffers out-of-order'}
+          : 'SR: on loss, retransmit ONLY the dropped packet ??receiver buffers out-of-order'}
       </div>
 
       {/* Packet queue visual */}
       <div className="bg-black/30 rounded-xl border border-white/10 p-4">
         <div className="flex items-center gap-1 mb-3">
-          <span className="text-xs text-gray-500 font-mono mr-2">Sender queue →</span>
+          <span className="text-xs text-gray-500 font-mono mr-2">Sender queue ??/span>
           {packets.map(({ i, status }) => (
             <div key={i}
               className={`relative w-12 h-12 border-2 rounded-lg flex flex-col items-center justify-center text-xs font-bold transition-all duration-500 ${statusColor[status]}`}>
@@ -208,7 +208,7 @@ function PipeliningView() {
   );
 }
 
-/* ─── Main RDT component ─────────────────────────────────────── */
+/* ?�?�?� Main RDT component ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?� */
 export default function RdtAnimation() {
   const [mode, setMode] = useState('1.0');
   const [packets, setPackets] = useState([]);
@@ -220,16 +220,16 @@ export default function RdtAnimation() {
 
   const checkData = [
     {
-      q: "RDT 2.0에서 NAK 대신 ACK만 사용할 수 없는가?\n(힌트: ACK에 번호를 붙인다면?)",
-      a: "가능하다. ACK 0 / ACK 1처럼 마지막으로 올바르게 받은 패킷 번호를 ACK에 붙이면\nNAK 없이도 '무엇을 받았는지' 전달할 수 있다.\n실제로 RDT 3.0과 TCP는 NAK 없이 누적 ACK 방식을 사용한다."
+      q: "RDT 2.0?�서 NAK ?�??ACK�??�용?????�는가?\n(?�트: ACK??번호�?붙인?�면?)",
+      a: "가?�하?? ACK 0 / ACK 1처럼 마�?막으�??�바르게 받�? ?�킷 번호�?ACK??붙이�?nNAK ?�이??'무엇??받았?��?' ?�달?????�다.\n?�제�?RDT 3.0�?TCP??NAK ?�이 ?�적 ACK 방식???�용?�다."
     },
     {
-      q: "RDT 3.0에서 타이머가 너무 짧으면 / 너무 길면 각각 어떤 문제가 생기는가?",
-      a: "너무 짧으면: 아직 전달 중인 패킷을 손실로 오판 → 불필요한 재전송 폭증 → 네트워크 낭비.\n너무 길면: 실제 손실이 발생해도 오래 기다린 후에야 재전송 → 지연 증가.\nTCP는 RTT를 측정하여 동적으로 타이머를 조절한다."
+      q: "RDT 3.0?�서 ?�?�머가 ?�무 짧으�?/ ?�무 길면 각각 ?�떤 문제가 ?�기?��??",
+      a: "?�무 짧으�? ?�직 ?�달 중인 ?�킷???�실�??�판 ??불필?�한 ?�전????�� ???�트?�크 ??��.\n?�무 길면: ?�제 ?�실??발생?�도 ?�래 기다�??�에???�전????지??증�?.\nTCP??RTT�?측정?�여 ?�적?�로 ?�?�머�?조절?�다."
     },
     {
-      q: "GBN과 SR 중 수신자 버퍼가 필요한 쪽은 어느 쪽인가?\n왜 GBN은 버퍼가 필요 없는가?",
-      a: "SR: 순서가 어긋난 패킷을 임시 저장해야 하므로 버퍼 필요.\nGBN: 순서가 어긋난 패킷은 전부 버린다. 버퍼에 저장하지 않고 즉시 폐기.\n그래서 GBN은 구현이 단순하지만 패킷 손실 시 낭비가 크고,\nSR은 복잡하지만 효율적이다."
+      q: "GBN�?SR �??�신??버퍼가 ?�요??쪽�? ?�느 쪽인가?\n??GBN?� 버퍼가 ?�요 ?�는가?",
+      a: "SR: ?�서가 ?�긋???�킷???�시 ?�?�해???��?�?버퍼 ?�요.\nGBN: ?�서가 ?�긋???�킷?� ?��? 버린?? 버퍼???�?�하지 ?�고 즉시 ?�기.\n그래??GBN?� 구현???�순?��?�??�킷 ?�실 ????��가 ?�고,\nSR?� 복잡?��?�??�율?�이??"
     }
   ];
 
@@ -252,11 +252,11 @@ export default function RdtAnimation() {
     const pkt = { id: Date.now(), type: 'data', seq, corrupted: corrupt, status: lose ? 'lost' : 'flying', isAck: false };
     setPackets(p => [...p, pkt]);
     setIsWaitingAck(true);
-    addLog(`Sender → pkt#${seq}${corrupt ? ' (CORRUPT)' : lose ? ' (will be LOST)' : ''}`);
+    addLog(`Sender ??pkt#${seq}${corrupt ? ' (CORRUPT)' : lose ? ' (will be LOST)' : ''}`);
 
     if (mode === '3.0') {
       timerRef.current = setTimeout(() => {
-        addLog(`⏱ Timeout! Retransmitting pkt#${seq}`);
+        addLog(`??Timeout! Retransmitting pkt#${seq}`);
         setIsWaitingAck(false);
         setPackets([]);
         setTimeout(() => startPacket(false, false), 100);
@@ -272,22 +272,22 @@ export default function RdtAnimation() {
   const handlePacketComplete = pkt => {
     if (pkt.disappeared) {
       setPackets(p => p.filter(x => x.id !== pkt.id));
-      addLog(`✗ Packet lost in network`);
+      addLog(`??Packet lost in network`);
       return;
     }
     setPackets(p => p.filter(x => x.id !== pkt.id));
 
     if (!pkt.isAck) {
       if (mode === '1.0') {
-        addLog(`Receiver ← pkt#${pkt.seq} ✓`);
+        addLog(`Receiver ??pkt#${pkt.seq} ??);
         setSenderSeq(s => s + 1);
         setIsWaitingAck(false);
       } else if (mode === '2.0') {
         if (pkt.corrupted) {
-          addLog(`Receiver: CHECKSUM FAIL → NAK`);
+          addLog(`Receiver: CHECKSUM FAIL ??NAK`);
           sendFeedback('nak', pkt.seq);
         } else {
-          addLog(`Receiver ← pkt#${pkt.seq} ✓ → ACK`);
+          addLog(`Receiver ??pkt#${pkt.seq} ????ACK`);
           sendFeedback('ack', pkt.seq);
         }
       } else if (mode === '3.0') {
@@ -297,7 +297,7 @@ export default function RdtAnimation() {
           addLog(`Receiver: dup pkt#${pkt.seq}, re-ACK`);
           sendFeedback('ack', pkt.seq);
         } else {
-          addLog(`Receiver ← pkt#${pkt.seq} ✓ → ACK${pkt.seq}`);
+          addLog(`Receiver ??pkt#${pkt.seq} ????ACK${pkt.seq}`);
           setReceiverSeq(s => (s + 1) % 2);
           sendFeedback('ack', pkt.seq);
         }
@@ -306,37 +306,37 @@ export default function RdtAnimation() {
       // ACK arrived at sender
       if (mode === '2.0') {
         if (pkt.type === 'nak') {
-          addLog(`Sender ← NAK → retransmit`);
+          addLog(`Sender ??NAK ??retransmit`);
           setIsWaitingAck(false);
           setTimeout(() => startPacket(false, false), 100);
         } else {
-          addLog(`Sender ← ACK ✓`);
+          addLog(`Sender ??ACK ??);
           setSenderSeq(s => s + 1);
           setIsWaitingAck(false);
         }
       } else if (mode === '3.0') {
         if (pkt.type === 'ack' && pkt.seq === senderSeq % 2) {
-          addLog(`Sender ← ACK${pkt.seq} ✓ — timer stopped`);
+          addLog(`Sender ??ACK${pkt.seq} ????timer stopped`);
           clearTimeout(timerRef.current);
           setSenderSeq(s => s + 1);
           setIsWaitingAck(false);
         } else {
-          addLog(`Sender ← stale ACK${pkt.seq}, ignore`);
+          addLog(`Sender ??stale ACK${pkt.seq}, ignore`);
         }
       }
     }
   };
 
   const MODES = [
-    { id: '1.0', label: 'RDT 1.0', desc: 'Perfect channel — no errors' },
-    { id: '2.0', label: 'RDT 2.0', desc: 'Bit errors → checksum + ACK/NAK' },
-    { id: '3.0', label: 'RDT 3.0', desc: 'Packet loss → seq numbers + timer' },
+    { id: '1.0', label: 'RDT 1.0', desc: 'Perfect channel ??no errors' },
+    { id: '2.0', label: 'RDT 2.0', desc: 'Bit errors ??checksum + ACK/NAK' },
+    { id: '3.0', label: 'RDT 3.0', desc: 'Packet loss ??seq numbers + timer' },
     { id: 'pipeline', label: 'Pipelining', desc: 'Window of N packets in flight' },
   ];
 
   if (mode === 'pipeline') {
     return (
-      <div className="w-full h-full flex flex-col">
+      <div className="w-full flex-1 flex flex-col">
         <div className="flex gap-3 mb-4 bg-black/40 px-4 py-3 rounded-xl border border-white/10 flex-wrap">
           {MODES.map(m => (
             <button key={m.id} onClick={() => setMode(m.id)}
@@ -356,7 +356,7 @@ export default function RdtAnimation() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full flex-1 flex flex-col">
       {/* Mode tabs */}
       <div className="flex gap-3 mb-4 bg-black/40 px-4 py-3 rounded-xl border border-white/10 flex-wrap">
         {MODES.map(m => (
@@ -379,8 +379,8 @@ export default function RdtAnimation() {
           <h3 className="text-lg font-black text-white">SENDER</h3>
           <div className="mt-3 text-center space-y-1">
             <p className="text-teal-300 text-sm font-mono">Seq: {mode === '3.0' ? senderSeq % 2 : senderSeq}</p>
-            {isWaitingAck && <p className="text-xs text-yellow-400 animate-pulse">⏳ Waiting ACK</p>}
-            {timerRef.current && mode === '3.0' && <p className="text-xs text-red-400">⏱ Timer running</p>}
+            {isWaitingAck && <p className="text-xs text-yellow-400 animate-pulse">??Waiting ACK</p>}
+            {timerRef.current && mode === '3.0' && <p className="text-xs text-red-400">??Timer running</p>}
           </div>
           <div className="mt-auto flex flex-col w-full gap-2">
             <button onClick={() => startPacket(false, false)} disabled={isWaitingAck}

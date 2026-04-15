@@ -15,25 +15,26 @@ function CameraRig({ drillDownLayer, controlsRef }) {
     if (drillDownLayer) {
       targetPos.current.set(-6, drillDownLayer.yPos + 2, 4);
       targetLookAt.current.set(-6, drillDownLayer.yPos, 0);
-      isMoving.current = true;
+    } else {
+      targetPos.current.set(0, 8, 16);
+      targetLookAt.current.set(0, 0, 0);
     }
+    isMoving.current = true;
   }, [drillDownLayer]);
 
   useFrame((state) => {
     if (!controlsRef.current || !isMoving.current) return;
 
-    if (drillDownLayer) {
-      // Lerp camera position
-      state.camera.position.lerp(targetPos.current, 0.04);
-      
-      // Lerp orbit control target
-      controlsRef.current.target.lerp(targetLookAt.current, 0.04);
-      controlsRef.current.update();
+    // Lerp camera position
+    state.camera.position.lerp(targetPos.current, 0.04);
+    
+    // Lerp orbit control target
+    controlsRef.current.target.lerp(targetLookAt.current, 0.04);
+    controlsRef.current.update();
 
-      // Stop moving once zoomed in, to allow user to freely rotate/change view
-      if (state.camera.position.distanceTo(targetPos.current) < 0.1) {
-        isMoving.current = false;
-      }
+    // Stop moving once zoomed in/out, to allow user to freely rotate/change view
+    if (state.camera.position.distanceTo(targetPos.current) < 0.1) {
+      isMoving.current = false;
     }
   });
 

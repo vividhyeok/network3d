@@ -24,10 +24,10 @@ export default function ApplicationScreen({ onClose }) {
         onClose={onClose}
       />
       
-      <div className="flex-1 mt-24 px-8 pb-8 relative overflow-hidden">
-        {activeTab === 'http' && <div className="w-full h-full"><HttpTimeline /></div>}
-        {activeTab === 'dns'  && <div className="w-full h-full"><DnsResolver /></div>}
-        {activeTab === 'p2p'  && <div className="w-full h-full"><P2PvsCS /></div>}
+      <div className="flex-1 mt-24 px-8 pb-8 relative overflow-y-auto">
+        {activeTab === 'http' && <div className="w-full min-h-full flex flex-col"><HttpTimeline /></div>}
+        {activeTab === 'dns'  && <div className="w-full min-h-full flex flex-col"><DnsResolver /></div>}
+        {activeTab === 'p2p'  && <div className="w-full min-h-full flex flex-col"><P2PvsCS /></div>}
       </div>
     </div>
   );

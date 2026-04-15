@@ -14,8 +14,8 @@ export default function NetworkScreen({ onClose }) {
         onClose={onClose}
       />
       
-      <div className="flex-1 mt-24 p-8 relative overflow-hidden">
-        <div className="w-full h-full">
+      <div className="flex-1 mt-24 p-8 relative overflow-y-auto">
+        <div className="w-full min-h-full flex flex-col">
           <ForwardingVsRouting />
         </div>
       </div>

@@ -14,16 +14,16 @@ export default function DnsResolver() {
 
   const checkData = [
     {
-      q: "브라우저가 google.com을 입력받았을 때 실제로 연결하는 건 무엇인가?\nDNS가 없다면 어떻게 해야 하는가?",
-      a: "브라우저는 IP 주소로만 통신할 수 있다. google.com은 사람이 읽기 쉬운 이름일 뿐이다.\nDNS가 없다면 사용자가 직접 142.250.196.46 같은 IP 주소를 알고 입력해야 한다."
+      q: "브라?��?가 google.com???�력받았?????�제�??�결?�는 �?무엇?��??\nDNS가 ?�다�??�떻�??�야 ?�는가?",
+      a: "브라?��???IP 주소로만 ?�신?????�다. google.com?� ?�람???�기 ?�운 ?�름??뿐이??\nDNS가 ?�다�??�용?��? 직접 142.250.196.46 같�? IP 주소�??�고 ?�력?�야 ?�다."
     },
     {
-      q: "Iterative와 Recursive 방식에서 '일을 누가 하는가'가 어떻게 다른가?",
-      a: "Iterative: Local DNS가 직접 Root → TLD → Auth를 차례로 방문한다. 클라이언트(Local DNS)가 일한다.\nRecursive: Local DNS가 Root에 물어보면 Root가 TLD에, TLD가 Auth에 물어본다. 서버들이 일한다.\n실제 인터넷은 주로 Iterative를 사용한다 — 서버 부하를 분산하기 위해서다."
+      q: "Iterative?� Recursive 방식?�서 '?�을 ?��? ?�는가'가 ?�떻�??�른가?",
+      a: "Iterative: Local DNS가 직접 Root ??TLD ??Auth�?차�?�?방문?�다. ?�라?�언??Local DNS)가 ?�한??\nRecursive: Local DNS가 Root??물어보면 Root가 TLD?? TLD가 Auth??물어본다. ?�버?�이 ?�한??\n?�제 ?�터?��? 주로 Iterative�??�용?�다 ???�버 부?��? 분산?�기 ?�해?�다."
     },
     {
-      q: "같은 도메인을 1분 안에 두 번 질의하면 두 번째는 왜 빠른가?\nTTL이 만료된 후 같은 도메인을 질의하면 어떻게 되는가?",
-      a: "첫 질의 결과가 Local DNS 캐시에 TTL 시간 동안 저장된다.\n두 번째 질의는 캐시 HIT → Root/TLD/Auth 방문 없이 즉시 응답.\nTTL 만료 후에는 캐시가 지워지므로 다시 4-hop 전체 질의를 수행한다."
+      q: "같�? ?�메?�을 1�??�에 ??�?질의?�면 ??번째????빠른가?\nTTL??만료????같�? ?�메?�을 질의?�면 ?�떻�??�는가?",
+      a: "�?질의 결과가 Local DNS 캐시??TTL ?�간 ?�안 ?�?�된??\n??번째 질의??캐시 HIT ??Root/TLD/Auth 방문 ?�이 즉시 ?�답.\nTTL 만료 ?�에??캐시가 지?��?므�??�시 4-hop ?�체 질의�??�행?�다."
     }
   ];
 
@@ -54,7 +54,7 @@ export default function DnsResolver() {
   // Cache query: only 2 steps
   const cacheSteps = [
     { from: 'client', to: 'local', msg: 'Q: www.abc.com IP?' },
-    { from: 'local',  to: 'client', msg: 'A: 1.2.3.4  [Cache HIT — TTL: 47s]', isCache: true },
+    { from: 'local',  to: 'client', msg: 'A: 1.2.3.4  [Cache HIT ??TTL: 47s]', isCache: true },
   ];
 
   const activeSteps = isCacheQuery ? cacheSteps : currentSteps;
@@ -111,7 +111,7 @@ export default function DnsResolver() {
   const isFirstQueryDone = !isCacheQuery && step >= currentSteps.length;
 
   return (
-    <div className="w-full h-full flex flex-col items-center gap-3">
+    <div className="w-full flex-1 flex flex-col items-center gap-3">
       {/* Controls row */}
       <div className="flex items-center gap-4 bg-black/40 px-6 py-3 rounded-xl border border-white/10">
         <span className="text-xs font-bold text-teal-400 uppercase tracking-wider">Mode</span>
@@ -126,12 +126,12 @@ export default function DnsResolver() {
         <div className="w-px h-6 bg-white/20" />
         <button onClick={handlePlay} disabled={isRunning && step < activeSteps.length}
           className="px-5 py-2 bg-teal-600 hover:bg-teal-500 disabled:bg-teal-900 disabled:text-gray-500 text-white rounded-lg font-bold text-sm transition-all">
-          ▶ Query
+          ??Query
         </button>
         {isFirstQueryDone && (
           <button onClick={handleQueryAgain}
             className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-sm transition-all animate-pulse">
-            🔄 Query Again (test cache)
+            ?�� Query Again (test cache)
           </button>
         )}
         <button onClick={handleReset} className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg font-bold text-sm">
@@ -143,14 +143,14 @@ export default function DnsResolver() {
       {(isFirstQueryDone || isCacheQuery) && (
         <div className="flex gap-6 text-sm font-mono bg-black/40 rounded-xl px-6 py-2 border border-white/10">
           <span className="text-gray-400">1st query: <span className="text-red-400 font-bold">4 hops</span></span>
-          {isCacheQuery && <span className="text-gray-400">2nd query: <span className="text-emerald-400 font-bold">1 hop (cached ✓)</span></span>}
+          {isCacheQuery && <span className="text-gray-400">2nd query: <span className="text-emerald-400 font-bold">1 hop (cached ??</span></span>}
         </div>
       )}
 
       {/* Cache HIT banner */}
       {cacheStepDone && (
         <div className="text-center px-8 py-3 bg-emerald-900/50 border border-emerald-500 rounded-xl font-bold text-emerald-300 text-sm">
-          ⚡ Cache HIT — Local DNS answered immediately. TTL: 47s remaining. No further hops needed.
+          ??Cache HIT ??Local DNS answered immediately. TTL: 47s remaining. No further hops needed.
         </div>
       )}
 

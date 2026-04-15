@@ -78,17 +78,17 @@ export default function FlowControlBuffer() {
 
   const checkData = [
     {
-      q: "혼잡 제어와 흐름 제어는 둘 다 송신 속도를 제한하는데, 무엇이 다른가?",
-      a: "흐름 제어: 수신자의 버퍼가 넘치지 않도록 제한. 수신자가 rwnd로 알려준다.\n혼잡 제어: 네트워크 내부(라우터 큐)가 막히지 않도록 제한. sender가 스스로 cwnd를 조절.\n실제 TCP 송신량 = min(cwnd, rwnd). 두 제한 중 더 작은 쪽이 적용된다."
+      q: "?�잡 ?�어?� ?�름 ?�어???????�신 ?�도�??�한?�는?? 무엇???�른가?",
+      a: "?�름 ?�어: ?�신?�의 버퍼가 ?�치지 ?�도�??�한. ?�신?��? rwnd�??�려준??\n?�잡 ?�어: ?�트?�크 ?��?(?�우????가 막히지 ?�도�??�한. sender가 ?�스�?cwnd�?조절.\n?�제 TCP ?�신??= min(cwnd, rwnd). ???�한 �????��? 쪽이 ?�용?�다."
     },
     {
-      q: "수신자 앱이 버퍼에서 데이터를 읽는 속도가 0이 되면 어떤 일이 일어나는가?\n이 상태가 영원히 지속되면 통신이 완전히 멈추는가?",
-      a: "rwnd = 0이 되면 sender는 전송을 멈춘다.\n하지만 완전히 멈추지는 않는다 — TCP는 이 상태에서 1바이트짜리 probe 패킷을 주기적으로 보낸다.\n수신자가 버퍼를 비우면 rwnd > 0인 ACK를 돌려보내고, sender가 재개한다."
+      q: "?�신???�이 버퍼?�서 ?�이?��? ?�는 ?�도가 0???�면 ?�떤 ?�이 ?�어?�는가?\n???�태가 ?�원??지?�되�??�신???�전??멈추?��??",
+      a: "rwnd = 0???�면 sender???�송??멈춘??\n?��?�??�전??멈추지???�는????TCP?????�태?�서 1바이?�짜�?probe ?�킷??주기?�으�?보낸??\n?�신?��? 버퍼�?비우�?rwnd > 0??ACK�??�려보내�? sender가 ?�개?�다."
     }
   ];
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div className="w-full flex-1 flex flex-col items-center">
       <div className="mb-8 text-center max-w-2xl">
          <h3 className="text-xl font-bold text-teal-400 mb-2">TCP Flow Control</h3>
          <p className="text-sm text-gray-400">Receiver advertises <span className="text-white font-bold">rwnd (Receive Window)</span>. Sender never sends more than rwnd to avoid overflowing the receiver's buffer.</p>

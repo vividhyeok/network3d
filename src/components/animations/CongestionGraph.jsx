@@ -23,7 +23,7 @@ export default function CongestionGraph() {
     return () => clearInterval(timer);
   }, [isRunning]);
 
-  // 3-Dup-ACK → Fast Retransmit: cwnd → ssthresh/2, skip Slow Start, enter CA
+  // 3-Dup-ACK ??Fast Retransmit: cwnd ??ssthresh/2, skip Slow Start, enter CA
   const triggerFastRetransmit = () => {
     setData(prev => {
       const last = prev[prev.length - 1];
@@ -35,7 +35,7 @@ export default function CongestionGraph() {
     });
   };
 
-  // Timeout → cwnd = 1, restart Slow Start completely
+  // Timeout ??cwnd = 1, restart Slow Start completely
   const triggerTimeout = () => {
     setData(prev => {
       const last = prev[prev.length - 1];
@@ -67,21 +67,21 @@ export default function CongestionGraph() {
 
   const checkData = [
     {
-      q: "Slow Start라는 이름인데 왜 cwnd가 지수적으로(2배씩) 증가하는가?\n이름이 왜 Slow Start인가?",
-      a: "이름은 '느리게 시작한다'는 의미다 — cwnd를 1에서 시작하기 때문이다.\n증가 방식은 지수적이지만, 0에서 시작하는 것보다는 안전하게 탐색한다는 의미에서 Slow다.\nACK 하나당 cwnd를 1씩 늘리면, 한 Round에 cwnd개의 ACK가 오므로\n결과적으로 한 Round마다 cwnd가 2배가 된다."
+      q: "Slow Start?�는 ?�름?�데 ??cwnd가 지?�적?�로(2배씩) 증�??�는가?\n?�름????Slow Start?��??",
+      a: "?�름?� '?�리�??�작?�다'???��?????cwnd�?1?�서 ?�작?�기 ?�문?�다.\n증�? 방식?� 지?�적?��?�? 0?�서 ?�작?�는 것보?�는 ?�전?�게 ?�색?�다???��??�서 Slow??\nACK ?�나??cwnd�?1???�리�? ??Round??cwnd개의 ACK가 ?��?�?n결과?�으�???Round마다 cwnd가 2배�? ?�다."
     },
     {
-      q: "3-Dup-ACK와 Timeout은 둘 다 패킷 손실을 의미하는데\n왜 TCP는 둘을 다르게 처리하는가?",
-      a: "3-Dup-ACK: 손실된 패킷 이후 패킷들이 계속 도착하고 있다는 뜻이다.\n네트워크는 아직 동작 중 → 혼잡이 심하지 않음 → cwnd를 절반만 줄이고 CA 유지.\nTimeout: 아무 패킷도 도착하지 않는다. 네트워크가 완전히 막혔을 가능성이 높다.\n더 보수적으로 대응 → cwnd를 1로 초기화하고 Slow Start 재시작."
+      q: "3-Dup-ACK?� Timeout?� ?????�킷 ?�실???��??�는??n??TCP???�을 ?�르�?처리?�는가?",
+      a: "3-Dup-ACK: ?�실???�킷 ?�후 ?�킷?�이 계속 ?�착?�고 ?�다???�이??\n?�트?�크???�직 ?�작 �????�잡???�하지 ?�음 ??cwnd�??�반�?줄이�?CA ?��?.\nTimeout: ?�무 ?�킷???�착?��? ?�는?? ?�트?�크가 ?�전??막혔??가?�성???�다.\n??보수?�으�??�????cwnd�?1�?초기?�하�?Slow Start ?�시??"
     },
     {
-      q: "혼잡 제어가 없다면 인터넷에서 어떤 일이 일어나는가?",
-      a: "모든 TCP 연결이 최대 속도로 계속 전송한다.\n라우터 큐가 가득 차서 패킷이 대규모로 손실된다.\n손실을 감지한 sender들이 재전송하면 트래픽이 더 증가한다.\n결국 네트워크 전체가 붕괴한다 — 이를 Congestion Collapse라 한다.\n1986년 실제로 인터넷이 이 상태가 됐고, 이후 TCP 혼잡 제어가 도입됐다."
+      q: "?�잡 ?�어가 ?�다�??�터?�에???�떤 ?�이 ?�어?�는가?",
+      a: "모든 TCP ?�결??최�? ?�도�?계속 ?�송?�다.\n?�우???��? 가??차서 ?�킷???�규모�??�실?�다.\n?�실??감�???sender?�이 ?�전?�하�??�래?�이 ??증�??�다.\n결국 ?�트?�크 ?�체가 붕괴?�다 ???��? Congestion Collapse???�다.\n1986???�제�??�터?�이 ???�태가 ?�고, ?�후 TCP ?�잡 ?�어가 ?�입?�다."
     }
   ];
 
   return (
-    <div className="w-full h-full flex flex-col gap-4">
+    <div className="w-full flex-1 flex flex-col gap-4">
       <div className="flex gap-6 relative" style={{ height: '380px' }}>
       {/* Graph */}
       <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col">
@@ -133,7 +133,7 @@ export default function CongestionGraph() {
                       </text>
                       <text x={getX(d.round)} y={getY(d.cwnd) - 5}
                         fill={color} fontSize="9" textAnchor="middle">
-                        cwnd→{d.cwnd}
+                        cwnd??d.cwnd}
                       </text>
                     </>
                   )}
@@ -148,8 +148,8 @@ export default function CongestionGraph() {
           {[
             ['#10b981', 'Slow Start (exponential ×2)'],
             ['#3b82f6', 'Congestion Avoidance (+1/RTT)'],
-            ['#f97316', '3-Dup-ACK: cwnd→ssthresh/2, skip SS'],
-            ['#ef4444', 'Timeout: cwnd→1, full Slow Start'],
+            ['#f97316', '3-Dup-ACK: cwnd?�ssthresh/2, skip SS'],
+            ['#ef4444', 'Timeout: cwnd??, full Slow Start'],
             ['#fbbf24', '--- ssthresh'],
           ].map(([color, label]) => (
             <div key={label} className="flex items-center gap-1">
@@ -164,12 +164,12 @@ export default function CongestionGraph() {
       <div className="w-56 flex flex-col gap-3">
         <button onClick={() => setIsRunning(r => !r)}
           className={`py-3 rounded-xl font-bold tracking-wide transition-all text-white ${isRunning ? 'bg-orange-500 hover:bg-orange-400' : 'bg-teal-600 hover:bg-teal-500'}`}>
-          {isRunning ? '⏸ PAUSE' : '▶ RUN'}
+          {isRunning ? '??PAUSE' : '??RUN'}
         </button>
 
         <div className="bg-black/40 border border-orange-900 rounded-xl p-4 space-y-2">
           <h4 className="text-xs font-bold text-orange-400 uppercase tracking-wider">Fast Retransmit</h4>
-          <p className="text-[10px] text-gray-400 leading-relaxed">3-Dup-ACK: ssthresh = cwnd/2, cwnd = ssthresh → enter CA directly</p>
+          <p className="text-[10px] text-gray-400 leading-relaxed">3-Dup-ACK: ssthresh = cwnd/2, cwnd = ssthresh ??enter CA directly</p>
           <button onClick={triggerFastRetransmit}
             className="w-full py-2 bg-orange-700 hover:bg-orange-600 text-white rounded-lg font-bold text-xs">
             Trigger 3-Dup-ACK
@@ -178,7 +178,7 @@ export default function CongestionGraph() {
 
         <div className="bg-black/40 border border-red-900 rounded-xl p-4 space-y-2">
           <h4 className="text-xs font-bold text-red-400 uppercase tracking-wider">Timeout</h4>
-          <p className="text-[10px] text-gray-400 leading-relaxed">Timeout: ssthresh = cwnd/2, cwnd = 1 → restart Slow Start from bottom</p>
+          <p className="text-[10px] text-gray-400 leading-relaxed">Timeout: ssthresh = cwnd/2, cwnd = 1 ??restart Slow Start from bottom</p>
           <button onClick={triggerTimeout}
             className="w-full py-2 bg-red-700 hover:bg-red-600 text-white rounded-lg font-bold text-xs">
             Trigger Timeout

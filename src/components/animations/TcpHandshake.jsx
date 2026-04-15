@@ -8,7 +8,7 @@ const SETUP_STEPS = [
     from: 'client', to: 'server',
     label: 'SYN  seq=x',
     clientState: 'SYN_SENT', serverState: 'LISTEN',
-    note: 'Client initiates — picks a random seq number x',
+    note: 'Client initiates ??picks a random seq number x',
     color: '#f87171',
   },
   {
@@ -28,24 +28,24 @@ const SETUP_STEPS = [
 ];
 
 const TEARDOWN_STEPS = [
-  { from: 'client', to: 'server',  label: 'FIN',     color: '#fb923c', note: 'Client done sending — initiates close' },
+  { from: 'client', to: 'server',  label: 'FIN',     color: '#fb923c', note: 'Client done sending ??initiates close' },
   { from: 'server', to: 'client',  label: 'ACK',     color: '#34d399', note: 'Server acknowledges FIN' },
-  { from: 'server', to: 'client',  label: 'FIN',     color: '#fb923c', note: 'Server also done — sends its FIN' },
-  { from: 'client', to: 'server',  label: 'ACK',     color: '#34d399', note: 'Client ACKs — enters TIME_WAIT' },
+  { from: 'server', to: 'client',  label: 'FIN',     color: '#fb923c', note: 'Server also done ??sends its FIN' },
+  { from: 'client', to: 'server',  label: 'ACK',     color: '#34d399', note: 'Client ACKs ??enters TIME_WAIT' },
 ];
 
 const checkData = [
   {
-    q: "3-way handshake에서 왜 2-way (SYN + SYN-ACK)로는 부족한가?",
-    a: "SYN-ACK만으로는 서버가 클라이언트의 메시지를 받을 수 있다는 것만 확인된다.\n클라이언트가 서버의 SYN-ACK를 받았다는 확인(ACK)이 없으면\n서버는 클라이언트가 실제로 연결 준비가 됐는지 알 수 없다.\n양방향 통신 준비를 서로 확인하려면 3단계가 필요하다."
+    q: "3-way handshake?�서 ??2-way (SYN + SYN-ACK)로는 부족한가?",
+    a: "SYN-ACK만으로는 ?�버가 ?�라?�언?�의 메시지�?받을 ???�다??것만 ?�인?�다.\n?�라?�언?��? ?�버??SYN-ACK�?받았?�는 ?�인(ACK)???�으�?n?�버???�라?�언?��? ?�제�??�결 준비�? ?�는지 ?????�다.\n?�방???�신 준비�? ?�로 ?�인?�려�?3?�계가 ?�요?�다."
   },
   {
-    q: "TIME_WAIT 상태가 왜 필요한가?\n연결을 끊자마자 바로 같은 포트로 새 연결을 열면 어떤 문제가 생길 수 있는가?",
-    a: "마지막 ACK가 유실될 경우를 대비한다. 상대방이 FIN을 재전송할 수 있으므로\n일정 시간 (보통 2×MSL) 동안 대기하며 늦게 도착하는 패킷을 처리한다.\n바로 새 연결을 열면 이전 연결의 지연 패킷이 새 연결의 데이터로 오인될 수 있다."
+    q: "TIME_WAIT ?�태가 ???�요?��??\n?�결???�자마자 바로 같�? ?�트�????�결???�면 ?�떤 문제가 ?�길 ???�는가?",
+    a: "마�?�?ACK가 ?�실??경우�??�비한?? ?��?방이 FIN???�전?�할 ???�으므�?n?�정 ?�간 (보통 2×MSL) ?�안 ?�기하�???�� ?�착?�는 ?�킷??처리?�다.\n바로 ???�결???�면 ?�전 ?�결??지???�킷?????�결???�이?�로 ?�인?????�다."
   },
   {
-    q: "HTTP Persistent connection이 없다면 웹페이지 하나를 로드할 때\nTCP handshake가 몇 번 일어나는가? 이게 왜 문제인가?",
-    a: "페이지에 포함된 객체(이미지, CSS, JS) 수만큼 handshake가 발생한다.\n현대 웹페이지는 수십~수백 개의 객체를 포함하므로\nhandshake 비용(1 RTT × 객체 수)이 실제 데이터 전송보다 더 큰 오버헤드가 된다."
+    q: "HTTP Persistent connection???�다�??�페?��? ?�나�?로드????nTCP handshake가 �?�??�어?�는가? ?�게 ??문제?��??",
+    a: "?�이지???�함??객체(?��?지, CSS, JS) ?�만??handshake가 발생?�다.\n?��? ?�페?��????�십~?�백 개의 객체�??�함?��?�?nhandshake 비용(1 RTT × 객체 ?????�제 ?�이???�송보다 ?????�버?�드가 ?�다."
   }
 ];
 
@@ -127,13 +127,13 @@ export default function TcpHandshake() {
   const isDone = step >= SETUP_STEPS.length;
 
   return (
-    <div className="w-full h-full flex flex-col gap-3">
+    <div className="w-full flex-1 flex flex-col gap-3">
       {/* Controls */}
       <div className="flex items-center gap-4 bg-black/40 px-5 py-3 rounded-xl border border-white/10">
         <button onClick={() => { reset(); setTimeout(() => setIsRunning(true), 50); }}
           disabled={isRunning}
           className="px-5 py-2 bg-teal-600 hover:bg-teal-500 disabled:bg-teal-900 disabled:text-gray-500 text-white rounded-lg font-bold text-sm">
-          ▶ Play Setup
+          ??Play Setup
         </button>
         {isDone && !showTeardown && (
           <button onClick={() => setShowTeardown(true)}
@@ -145,7 +145,7 @@ export default function TcpHandshake() {
           <button onClick={() => { setTeardownStep(0); setIsTeardownRunning(true); }}
             disabled={isTeardownRunning}
             className="px-5 py-2 bg-orange-700 hover:bg-orange-600 disabled:bg-orange-950 text-white rounded-lg font-bold text-sm">
-            ▶ Play Teardown
+            ??Play Teardown
           </button>
         )}
         <button onClick={reset} className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg text-sm">Reset</button>
@@ -153,7 +153,7 @@ export default function TcpHandshake() {
 
       {/* Key insight */}
       <div className="bg-teal-950 border border-teal-700 rounded-xl px-5 py-2 text-sm text-teal-200 font-medium">
-        💡 TCP costs <strong>1 RTT</strong> just to establish a connection — this is why <strong>persistent HTTP</strong> reuses connections instead of opening one per object.
+        ?�� TCP costs <strong>1 RTT</strong> just to establish a connection ??this is why <strong>persistent HTTP</strong> reuses connections instead of opening one per object.
       </div>
 
       {/* Sequence diagram */}

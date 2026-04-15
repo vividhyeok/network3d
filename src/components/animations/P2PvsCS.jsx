@@ -16,12 +16,12 @@ function calcP2P(n) {
 
 const checkData = [
   {
-    q: "사용자 수가 10배 늘었을 때 Client-Server와 P2P의 배포 시간은 각각 어떻게 변하는가?\n왜 다른가?",
-    a: "CS: 서버 업로드 용량(Us)은 고정이므로 사용자 N이 늘면 배포 시간 NF/Us도 선형으로 증가한다.\nP2P: 새 피어가 합류하면 그 피어의 업로드 용량도 추가된다 (Us + N·Ui).\n분자(NF)와 분모(Us + N·Ui)가 같이 증가하므로 배포 시간 증가가 훨씬 완만하다."
+    q: "?�용???��? 10�??�었????Client-Server?� P2P??배포 ?�간?� 각각 ?�떻�?변?�는가?\n???�른가?",
+    a: "CS: ?�버 ?�로???�량(Us)?� 고정?��?�??�용??N???�면 배포 ?�간 NF/Us???�형?�로 증�??�다.\nP2P: ???�어가 ?�류?�면 �??�어???�로???�량??추�??�다 (Us + N·Ui).\n분자(NF)?� 분모(Us + N·Ui)가 같이 증�??��?�?배포 ?�간 증�?가 ?�씬 ?�만?�다."
   },
   {
-    q: "P2P에서 한 피어가 파일의 일부만 가지고 있을 때 다른 피어에게 줄 수 있는가?\n이게 왜 중요한가?",
-    a: "줄 수 있다. BitTorrent처럼 파일을 청크(chunk) 단위로 나눠서 교환한다.\n전체 파일을 다 받기 전에도 받은 청크를 다른 피어에게 업로드할 수 있다.\n이 때문에 P2P는 다운로드가 진행될수록 전체 네트워크 업로드 용량이 증가한다."
+    q: "P2P?�서 ???�어가 ?�일???��?�?가지�??�을 ???�른 ?�어?�게 �????�는가?\n?�게 ??중요?��??",
+    a: "�????�다. BitTorrent처럼 ?�일??�?��(chunk) ?�위�??�눠??교환?�다.\n?�체 ?�일????받기 ?�에??받�? �?���??�른 ?�어?�게 ?�로?�할 ???�다.\n???�문??P2P???�운로드가 진행?�수�??�체 ?�트?�크 ?�로???�량??증�??�다."
   }
 ];
 
@@ -47,7 +47,7 @@ export default function P2PvsCS() {
   const serverOverwhelmed = n >= 7;
 
   return (
-    <div className="w-full h-full flex flex-col gap-4">
+    <div className="w-full flex-1 flex flex-col gap-4">
       {/* Slider control */}
       <div className="flex items-center gap-6 bg-black/40 px-6 py-3 rounded-xl border border-white/10">
         <span className="text-sm font-bold text-teal-400 uppercase tracking-wider">Peers / Clients: <span className="text-white text-lg">{n}</span></span>
@@ -137,7 +137,7 @@ export default function P2PvsCS() {
                   <text x={p.x} y={p.y + 1.5} textAnchor="middle" fontSize="2.8" fill="white" fontWeight="bold">
                     {i === 0 ? 'SEED' : `P${i}`}
                   </text>
-                  <text x={p.x} y={p.y + 5} textAnchor="middle" fontSize="2" fill="#10b981">↑{i === 0 ? Us : Ui}</text>
+                  <text x={p.x} y={p.y + 5} textAnchor="middle" fontSize="2" fill="#10b981">??i === 0 ? Us : Ui}</text>
                 </g>
               ))}
             </svg>
@@ -162,7 +162,7 @@ export default function P2PvsCS() {
         <span className="text-red-400">CS: <strong>{csTime}</strong> units</span>
         <span className="text-emerald-400">P2P: <strong>{p2pTime}</strong> units</span>
         <span className="text-teal-300 ml-auto font-bold">
-          💡 P2P: every new peer brings additional U<sub>i</sub>={Ui} upload capacity
+          ?�� P2P: every new peer brings additional U<sub>i</sub>={Ui} upload capacity
         </span>
       </div>
 

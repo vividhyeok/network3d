@@ -19,16 +19,16 @@ export default function HttpTimeline() {
 
   const checkData = [
     {
-      q: "Non-persistent HTTP에서 이미지 파일 3개를 받으려면 TCP 연결을 몇 번 맺어야 하는가?\n각 연결마다 왜 2 RTT가 드는가?",
-      a: "HTML 1개 + 이미지 3개 = 총 4개 객체. 각 객체마다 TCP 연결을 새로 맺는다.\nTCP 연결 자체가 1 RTT (SYN-SYNACK), 실제 GET 요청-응답이 1 RTT.\n따라서 객체 하나당 2 RTT → 총 8 RTT.\n(단, HTML을 먼저 받아야 이미지 URL을 알 수 있으므로 순차적으로 발생한다.)"
+      q: "Non-persistent HTTP?�서 ?��?지 ?�일 3개�? 받으?�면 TCP ?�결??�?�?맺어???�는가?\n�??�결마다 ??2 RTT가 ?�는가?",
+      a: "HTML 1�?+ ?��?지 3�?= �?4�?객체. �?객체마다 TCP ?�결???�로 맺는??\nTCP ?�결 ?�체가 1 RTT (SYN-SYNACK), ?�제 GET ?�청-?�답??1 RTT.\n?�라??객체 ?�나??2 RTT ??�?8 RTT.\n(?? HTML??먼�? 받아???��?지 URL???????�으므�??�차?�으�?발생?�다.)"
     },
     {
-      q: "Persistent + Pipelining에서 같은 4개 객체를 받으면 몇 RTT인가?\n왜 줄어드는가?",
-      a: "TCP 연결 1번 (1 RTT) + 모든 GET을 동시에 파이프라이닝 (1 RTT).\n총 ~2 RTT. 연결을 재사용하고 요청을 기다리지 않고 연속으로 보내기 때문이다.\n단, 첫 HTML을 받아야 이미지 URL을 알므로 HTML 수신 후 나머지를 파이프라이닝."
+      q: "Persistent + Pipelining?�서 같�? 4�?객체�?받으�?�?RTT?��??\n??줄어?�는가?",
+      a: "TCP ?�결 1�?(1 RTT) + 모든 GET???�시???�이?�라?�닝 (1 RTT).\n�?~2 RTT. ?�결???�사?�하�??�청??기다리�? ?�고 ?�속?�로 보내�??�문?�다.\n?? �?HTML??받아???��?지 URL???��?�?HTML ?�신 ???�머지�??�이?�라?�닝."
     },
     {
-      q: "HTTP는 왜 기본적으로 stateless(무상태)인가?\n그렇다면 로그인 유지는 어떻게 구현하는가?",
-      a: "HTTP 자체는 요청-응답이 끝나면 서버가 클라이언트를 기억하지 않는다.\n단순하게 유지하기 위한 설계다.\n로그인 유지는 쿠키를 통해 클라이언트가 상태를 직접 들고 다니는 방식으로 구현한다."
+      q: "HTTP????기본?�으�?stateless(무상???��??\n그렇?�면 로그???��????�떻�?구현?�는가?",
+      a: "HTTP ?�체???�청-?�답???�나�??�버가 ?�라?�언?��? 기억?��? ?�는??\n?�순?�게 ?��??�기 ?�한 ?�계??\n로그???��???쿠키�??�해 ?�라?�언?��? ?�태�?직접 ?�고 ?�니??방식?�로 구현?�다."
     }
   ];
 
@@ -36,7 +36,7 @@ export default function HttpTimeline() {
   // Persistent: 1 RTT (conn) + 1 RTT (html) + 1 RTT (2 images pipelined) = 3 RTT
   
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center pt-8">
+    <div className="w-full flex-1 flex flex-col items-center justify-center pt-8">
       
       {/* Toggle */}
       <div className="flex space-x-6 mb-8 bg-black/40 p-2 rounded-xl border border-white/10">

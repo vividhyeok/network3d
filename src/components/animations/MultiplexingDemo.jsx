@@ -26,8 +26,8 @@ function PacketTag({ pkt, tcpMode, progress, resolved, targetPort }) {
       }}>
       <div className={`px-3 py-1.5 rounded-lg border-2 text-xs font-mono font-bold whitespace-nowrap shadow-xl`}
         style={{ borderColor: resolvedProc?.color || '#fff', color: resolvedProc?.color || '#fff', backgroundColor: 'rgba(0,0,0,0.8)' }}>
-        [{pkt.srcIP}:{pkt.srcPort} → :{pkt.dstPort}] {pkt.label}
-        {tcpMode && <div className="text-[10px] mt-0.5 text-gray-300">4-tuple: {pkt.srcIP}:{pkt.srcPort} ↔ HOST:{pkt.dstPort}</div>}
+        [{pkt.srcIP}:{pkt.srcPort} ??:{pkt.dstPort}] {pkt.label}
+        {tcpMode && <div className="text-[10px] mt-0.5 text-gray-300">4-tuple: {pkt.srcIP}:{pkt.srcPort} ??HOST:{pkt.dstPort}</div>}
       </div>
     </div>
   );
@@ -44,12 +44,12 @@ export default function MultiplexingDemo() {
 
   const checkData = [
     {
-      q: "웹 서버가 port 80 하나만 열어도 수천 명의 클라이언트를 동시에 처리할 수 있는 이유는?",
-      a: "TCP는 4-tuple (src IP, src port, dst IP, dst port)로 소켓을 구분한다.\n클라이언트마다 src IP 또는 src port가 다르므로 dst port가 모두 80이어도\n각각 다른 소켓으로 라우팅된다.\n서버 입장에서는 port 80으로 들어오는 연결마다 별도 소켓을 생성한다."
+      q: "???�버가 port 80 ?�나�??�어???�천 명의 ?�라?�언?��? ?�시??처리?????�는 ?�유??",
+      a: "TCP??4-tuple (src IP, src port, dst IP, dst port)�??�켓??구분?�다.\n?�라?�언?�마??src IP ?�는 src port가 ?�르므�?dst port가 모두 80?�어??n각각 ?�른 ?�켓?�로 ?�우?�된??\n?�버 ?�장?�서??port 80?�로 ?�어?�는 ?�결마다 별도 ?�켓???�성?�다."
     },
     {
-      q: "UDP에서 두 클라이언트가 같은 서버의 같은 포트로 패킷을 보내면 어떻게 되는가?\nTCP와 어떻게 다른가?",
-      a: "UDP: dst port만으로 소켓을 결정하므로 두 패킷이 같은 소켓으로 들어간다.\n애플리케이션이 src IP/port를 직접 읽어서 누가 보냈는지 구분해야 한다.\nTCP: 4-tuple이 다르면 별도 소켓 → 자동으로 연결별 구분된다."
+      q: "UDP?�서 ???�라?�언?��? 같�? ?�버??같�? ?�트�??�킷??보내�??�떻�??�는가?\nTCP?� ?�떻�??�른가?",
+      a: "UDP: dst port만으�??�켓??결정?��?�????�킷??같�? ?�켓?�로 ?�어간다.\n?�플리�??�션??src IP/port�?직접 ?�어???��? 보냈?��? 구분?�야 ?�다.\nTCP: 4-tuple???�르�?별도 ?�켓 ???�동?�로 ?�결�?구분?�다."
     }
   ];
 
@@ -91,9 +91,9 @@ export default function MultiplexingDemo() {
           setHighlightedSocket(socketKey);
           setActivePackets(prev => prev.map(p => p.id === pkt.id ? { ...p, resolved: true } : p));
           if (tcpMode) {
-            addLog(`TCP 4-tuple match: [${pkt.srcIP}:${pkt.srcPort} → :${pkt.dstPort}] → ${proc.name}`);
+            addLog(`TCP 4-tuple match: [${pkt.srcIP}:${pkt.srcPort} ??:${pkt.dstPort}] ??${proc.name}`);
           } else {
-            addLog(`UDP dst port ${pkt.dstPort} → ${proc.name}`);
+            addLog(`UDP dst port ${pkt.dstPort} ??${proc.name}`);
           }
           const t = setTimeout(() => {
             setActivePackets(prev => prev.filter(p => p.id !== pkt.id));
@@ -124,7 +124,7 @@ export default function MultiplexingDemo() {
     : [];
 
   return (
-    <div className="w-full h-full flex flex-col gap-3">
+    <div className="w-full flex-1 flex flex-col gap-3">
       {/* Controls */}
       <div className="flex items-center gap-4 bg-black/40 px-5 py-3 rounded-xl border border-white/10">
         <span className="text-xs font-bold text-teal-400 uppercase tracking-wider">Demux Mode</span>
@@ -139,7 +139,7 @@ export default function MultiplexingDemo() {
         <div className="w-px h-5 bg-white/20" />
         <button onClick={start} disabled={isRunning}
           className="px-5 py-2 bg-teal-600 hover:bg-teal-500 disabled:bg-teal-900 disabled:text-gray-500 text-white rounded-lg font-bold text-sm">
-          ▶ Simulate
+          ??Simulate
         </button>
         <button onClick={clearAll} className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg text-sm">Reset</button>
       </div>
@@ -147,8 +147,8 @@ export default function MultiplexingDemo() {
       {/* Mode insight */}
       <div className={`px-5 py-2 rounded-xl text-sm font-medium border ${tcpMode ? 'bg-blue-950/30 border-blue-700 text-blue-200' : 'bg-teal-950/30 border-teal-700 text-teal-200'}`}>
         {tcpMode
-          ? '🔵 TCP: router identifies a connection by all 4 values — same dst port 80 can serve many simultaneous connections'
-          : '🟢 UDP: Transport Layer only reads dst port — routes to the matching socket regardless of source'}
+          ? '?�� TCP: router identifies a connection by all 4 values ??same dst port 80 can serve many simultaneous connections'
+          : '?�� UDP: Transport Layer only reads dst port ??routes to the matching socket regardless of source'}
       </div>
 
       <div className="flex-1 flex gap-4">
@@ -160,7 +160,7 @@ export default function MultiplexingDemo() {
           <div className="absolute left-0 right-0 bg-indigo-950/60 border-y border-indigo-800/40 text-center z-20"
             style={{ top: '55%', height: '12%' }}>
             <div className="h-full flex items-center justify-center">
-              <span className="text-indigo-300 font-bold text-xs uppercase tracking-widest">Transport Layer — reads dst port{tcpMode ? ' + src IP:port' : ''}</span>
+              <span className="text-indigo-300 font-bold text-xs uppercase tracking-widest">Transport Layer ??reads dst port{tcpMode ? ' + src IP:port' : ''}</span>
             </div>
           </div>
 
@@ -214,7 +214,7 @@ export default function MultiplexingDemo() {
           <div className="mt-4 pt-4 border-t border-white/10 text-[10px] text-gray-500 leading-relaxed">
             {tcpMode
               ? 'TCP needs all 4 values (src IP, src port, dst IP, dst port) to identify which connection socket to use. A web server can handle thousands of connections on port 80 simultaneously.'
-              : 'UDP only checks dst port. All packets to port 80 go to the same socket — there is no concept of separate connections.'}
+              : 'UDP only checks dst port. All packets to port 80 go to the same socket ??there is no concept of separate connections.'}
           </div>
         </div>
       </div>

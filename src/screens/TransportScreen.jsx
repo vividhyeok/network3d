@@ -28,12 +28,12 @@ export default function TransportScreen({ onClose }) {
         onClose={onClose}
       />
       
-      <div className="flex-1 mt-24 px-8 pb-8 relative overflow-hidden">
-        {activeTab === 'connection' && <div className="w-full h-full"><TcpHandshake /></div>}
-        {activeTab === 'rdt'        && <div className="w-full h-full"><RdtAnimation /></div>}
-        {activeTab === 'mux'        && <div className="w-full h-full"><MultiplexingDemo /></div>}
-        {activeTab === 'congestion' && <div className="w-full h-full"><CongestionGraph /></div>}
-        {activeTab === 'flow'       && <div className="w-full h-full"><FlowControlBuffer /></div>}
+      <div className="flex-1 mt-24 px-8 pb-8 relative overflow-y-auto">
+        {activeTab === 'connection' && <div className="w-full min-h-full flex flex-col"><TcpHandshake /></div>}
+        {activeTab === 'rdt'        && <div className="w-full min-h-full flex flex-col"><RdtAnimation /></div>}
+        {activeTab === 'mux'        && <div className="w-full min-h-full flex flex-col"><MultiplexingDemo /></div>}
+        {activeTab === 'congestion' && <div className="w-full min-h-full flex flex-col"><CongestionGraph /></div>}
+        {activeTab === 'flow'       && <div className="w-full min-h-full flex flex-col"><FlowControlBuffer /></div>}
       </div>
     </div>
   );
