@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import SelfCheck from '../SelfCheck';
+import TutorialSlider from '../TutorialSlider';
 
 export default function CongestionGraph() {
   const [data, setData] = useState([{ round: 0, cwnd: 1, ssthresh: 16, phase: 'ss', event: null, eventType: null }]);
@@ -197,3 +197,4 @@ export default function CongestionGraph() {
     </div>
   );
 }
+

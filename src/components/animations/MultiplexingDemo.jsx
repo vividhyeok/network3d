@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import SelfCheck from '../SelfCheck';
+import TutorialSlider from '../TutorialSlider';
 
 const PROCESSES = [
   { port: 80,    name: 'HTTP Server',   color: '#0ea5e9', bg: 'bg-sky-900',    border: 'border-sky-500' },
@@ -224,3 +224,4 @@ export default function MultiplexingDemo() {
     </div>
   );
 }
+

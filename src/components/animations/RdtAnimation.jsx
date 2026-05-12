@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import SelfCheck from '../SelfCheck';
+import TutorialSlider from '../TutorialSlider';
 
 const FLIGHT_TIME = 2000;
 
@@ -437,3 +437,4 @@ export default function RdtAnimation() {
     </div>
   );
 }
+

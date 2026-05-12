@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SelfCheck from '../SelfCheck';
+import TutorialSlider from '../TutorialSlider';
 
 export default function ForwardingVsRouting() {
   const [packetPos, setPacketPos] = useState(-50); // -50 = ingress, 0 = center, 100 = egress
@@ -159,3 +159,4 @@ export default function ForwardingVsRouting() {
     </div>
   );
 }
+

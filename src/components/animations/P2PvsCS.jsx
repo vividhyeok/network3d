@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SelfCheck from '../SelfCheck';
+import TutorialSlider from '../TutorialSlider';
 
 // Constants representing bandwidth units
 const F = 100;   // file size (arbitrary units)
@@ -171,3 +171,4 @@ export default function P2PvsCS() {
     </div>
   );
 }
+

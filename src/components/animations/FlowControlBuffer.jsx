@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SelfCheck from '../SelfCheck';
+import TutorialSlider from '../TutorialSlider';
 
 export default function FlowControlBuffer() {
   const [senderBuffer, setSenderBuffer] = useState(0); // number of packets waiting
@@ -174,3 +174,4 @@ export default function FlowControlBuffer() {
     </div>
   );
 }
+
